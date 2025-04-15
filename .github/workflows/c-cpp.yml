@@ -1,4 +1,4 @@
-name: CI
+name: Build kldload
 
 on:
   push:
@@ -22,6 +22,8 @@ jobs:
 
     - name: Checkout
       uses: actions/checkout@v4
+      with:
+        submodules: recursive
 
     - name: Install dependencies
       run: |
@@ -36,12 +38,11 @@ jobs:
     - name: Build Payload
       run: |
         export PS5_PAYLOAD_SDK=/opt/ps5-payload-sdk
-        cd src
         make -j30
 
     - name: Upload Payload
       uses: actions/upload-artifact@v4
       with:
         name: Payload
-        path: ./ps5-kstuff-ldr/kstuff.elf
+        path: kldload.elf
         if-no-files-found: error
